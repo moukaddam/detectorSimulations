@@ -102,7 +102,7 @@ Whenever an electron or positron is emitted, you can choose to simulate kinemati
 | ``` /DetSys/app/addSpiceTargetChamber ``` | Add SPICE target chamber |  |
 | ``` /DetSys/Spice/setResolution double double ``` |Set resolution of SPICE Si(Li)  |  |
 | ``` /DetSys/det/addSpice int``` | Add Si(Li) detector |  |
-| ``` /DetSys/det/addS3 ``` | Add SPICE S3 detector |  |
+| ``` /DetSys/det/addS3 int double double double double ``` | Add SPICE S3 detector <NbofRings><position x,y,z (in mm)>< Rotation angle (in deg) >|  |
 
 ####8PI
 | Command | Brief Description | Default |
@@ -172,13 +172,17 @@ Requires all four commands to build
 | Command | Brief Description | Default |
 | :------ | :---------------- | :------ |
 | ``` /DetSys/world/magneticField x y z unit``` | Set world magnetic field (depreciated) | 0, 0, 0 |
-| ``` /DetSys/world/tabMagneticField filename ``` | Set tabulated magnetic field* | Disabled | 
+| ``` /DetSys/world/tabMagneticField filename double double``` | Set tabulated magnetic field <offset in z (in mm)><rotation around z (in deg)> * | Disabled | 
+
+####Tracking
+| Command | Brief Description | Default |
+| :------ | :---------------- | :------ |
+| ``` /DetSys/world/magneticField x y z unit  ``` | Set step length in the world for charged particles double unit  | 10 m |
 
 *Used for SPICE: these files are 50Mb each and are different for each lens so until a better solution comes along they will be kept on the network at TRIUMF (email Mohamad or Lee for precise location)
 
 | Command | Brief Description | Default |
 | :------ | :---------------- | :------ |
-| ```  ``` |  |  |
 | ```  ``` |  |  |
 | ```  ``` |  |  |
 | ```  ``` |  |  |
