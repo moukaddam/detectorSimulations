@@ -94,6 +94,7 @@ DetectorConstruction::DetectorConstruction() :
 {
 
   WorldSizeX  = WorldSizeY = WorldSizeZ = 10.0*m;
+  WorldMaxStep = 10.0*m; 
   G4GeometryManager::GetInstance()->SetWorldMaximumExtent(WorldSizeX);//specify\
   the surface tolerance to be relative to the extent of the world volume \
   This can only be called once!
@@ -175,7 +176,8 @@ DetectorConstruction::~DetectorConstruction()
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-
+   G4cout << " DetectorConstruction::Construct() " << G4endl ;
+   
   // Replaced by ConstructDetectionSystems
 	
   // Experimental hall (world volume)
@@ -212,8 +214,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   // this is useful to map the magnetic field of the lens
   // [mhd - 07 May 2015 ]
   //------------------------
-   G4double maxStep = 10.*mm;
-   fStepLimit = new G4UserLimits(maxStep); 
+   //G4double maxStep = 10.*m;
+   G4cout << " WorldMaxStep " << WorldMaxStep << G4endl ;
+   G4cin.get(); 
+    
+   fStepLimit = new G4UserLimits(WorldMaxStep); 
    logicWorld->SetUserLimits(fStepLimit);   
   //------------------------
         
@@ -229,6 +234,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   
 
 }
+
+void DetectorConstruction::SetWorldMaximumStep(G4double limit) {
+	WorldMaxStep = limit ; 
+	G4cout << " Inside DetectorConstruction::SetWorldMaximumStep  " << WorldMaxStep << G4endl ;
+	UpdateGeometry(); // auto update
+	}
+
 
 void DetectorConstruction::SetWorldMaterial( G4String name )
 {

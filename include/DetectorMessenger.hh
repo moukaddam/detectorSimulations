@@ -70,6 +70,7 @@ class DetectorMessenger: public G4UImessenger
     G4UIcmdWithABool*          WorldVisCmd;
     G4UIcmdWith3VectorAndUnit* WorldMagneticFieldCmd;
     G4UIcmdWithAString*        WorldTabMagneticFieldCmd;
+    G4UIcmdWithADoubleAndUnit* WorldStepLimitCmd;
     G4UIcmdWithoutParameter*   UpdateCmd;
 
     // Generic Target Apparatus

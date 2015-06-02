@@ -89,6 +89,11 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction* Det)
   WorldTabMagneticFieldCmd->SetGuidance("Set tabulated magnetic field.");
   WorldTabMagneticFieldCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
+  WorldStepLimitCmd = new G4UIcmdWithADoubleAndUnit("/DetSys/world/setStepLimit",this);
+  WorldStepLimitCmd->SetGuidance("Set the maximum step of the transport process in the world.");
+  WorldStepLimitCmd->SetUnitCategory("Length");
+  WorldStepLimitCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  
   GenericTargetCmd = new G4UIcmdWithAString("/DetSys/app/genericTarget",this);
   GenericTargetCmd->SetGuidance("Select material of the target.");
   GenericTargetCmd->SetParameterName("choice",false);
@@ -322,6 +327,7 @@ DetectorMessenger::~DetectorMessenger()
   delete WorldVisCmd;
   delete WorldMagneticFieldCmd;
   delete WorldTabMagneticFieldCmd;
+  delete WorldStepLimitCmd;
   delete DetSysDir; 
   delete UpdateCmd;
   delete GenericTargetCmd;
@@ -399,6 +405,13 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
     std::istringstream is ((char*)s);
     is>>path>>z_offset>>zrotation_offset;
     Detector->SetTabMagneticField(path, z_offset, zrotation_offset ); // z in mm, angle in degree  
+  }
+	if( command ==   WorldStepLimitCmd ) {
+	G4cout << " Hello : " << " New value " << newValue << G4endl ;
+	G4cout << " limit : " << (WorldStepLimitCmd->GetNewDoubleValue(newValue) - 4 )<< G4endl ;  
+	G4cin.get(); 
+    Detector->SetWorldMaximumStep(WorldStepLimitCmd->GetNewDoubleValue(newValue));
+   G4cin.get(); 
   }
   if( command == UpdateCmd ) { 
     Detector->UpdateGeometry(); 

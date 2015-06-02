@@ -79,6 +79,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetWorldVis( G4bool );
     void SetWorldMagneticField( G4ThreeVector );
     void SetTabMagneticField(G4String, G4double, G4double);
+    void SetWorldMaximumStep( G4double ); 
 
     void SetGenericTargetMaterial( G4String );
     void SetGenericTargetDimensions( G4ThreeVector );
@@ -153,6 +154,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double  WorldSizeX;
     G4double  WorldSizeY;
     G4double  WorldSizeZ;
+    G4double  WorldMaxStep; 
     G4bool    world_vis;
     G4bool    builtDetectors;
     G4double  griffinFwdBackPosition;
