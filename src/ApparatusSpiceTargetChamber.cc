@@ -55,7 +55,7 @@ ApparatusSpiceTargetChamber::ApparatusSpiceTargetChamber()
   this->photon_shield_layer_three_material = "Copper";
   this->downstream_cone_material = "Aluminum"; 
   this->ps_clamp_material = "Aluminum";
-  this->target_wheel_material = "Peek"; 
+  this->target_wheel_material = "Aluminum"; 
   this->target_wheel_gear_material_a = "Delrin";
   this->target_wheel_gear_material_b = "Aluminum";
   this->gear_plate_material = "Aluminum";
