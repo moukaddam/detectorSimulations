@@ -28,10 +28,9 @@ RootManager::RootManager()
 		exit(-1);
 		}
 
-
 	// Create objects to hold the data
 	//spice event
-	fSpiceData = new TSpiceData();
+	//fSpiceData = new TSpiceData();
 	//fS3Data = new TS3Data();
 	//
 	//fDetectorSpice = new DetectionSystemSpice();
@@ -46,7 +45,7 @@ RootManager::RootManager()
 	//fSceptarData = new TSceptarData();
 	
 	//GRIFFIN Event
-	//fGriffinData = new TGriffinData();
+	fGriffinData = new TGriffinData();
 
 	//Fragment Event
 	//fFragment = new TTigFragment();
@@ -56,31 +55,35 @@ RootManager::RootManager()
 		
 	//histograms 
 	//fHist = new TH1F("h","h",500,0,1800);
-
+	printf("Setting the tree \n");    
 	//Attach detector branches to the tree
 	SetTree();
+	printf("Leaving constructor.\n");    
 
 }
 
 //Destructor
 RootManager::~RootManager()  {}
 
-
+  
 void RootManager::SetTree(){
 
-
+	printf("Entering Set tree.\n");  
 	//Creating the tree ;
 	fOutputTree = new TTree("Simulated_Data","Simulated Data Tree");
 	if(!fOutputTree) {
 		cout << "\nCould not create Simulated Data Tree in root file" << endl;
 		exit(-1);
 		}
+     printf("Setting Autosave.\n");  
 	fOutputTree->SetAutoSave(100000);
+ 	
+ 	printf("Define the branch.\n");  
  	/*
 	At this stage you can define what branches are written in the tree
 	*/
 	//fOutputTree->Branch("S3Branch","TS3Data",&fS3Data);
-	fOutputTree->Branch("SpiceBranch","TSpiceData",&fSpiceData); 
+	//fOutputTree->Branch("SpiceBranch","TSpiceData",&fSpiceData); 
 	//----------------
 	//fOutputTree->Branch("TTigFragment","TTigFragment",&fFragment, 1000, 99);
 	//----------------
@@ -90,13 +93,15 @@ void RootManager::SetTree(){
 	//----------------
 	//fOutputTree->Branch("SceptarBranch","TSceptarData",&fSceptarData);
 	//----------------
-	// fOutputTree->Branch("GriffinBranch","TGriffinData",&fGriffinData);
+	fOutputTree->Branch("GriffinBranch","TGriffinData",&fGriffinData);
 	//----------------
 	fOutputTree->Branch("HistoryBranch","THistoryData",&fHistoryData);
 	//----------------
 	/*
 	Other detector branches goes here
 	*/
+	
+	     printf("Leaving the tree setting .\n");  
  } 
 
 void RootManager::FillHist(double temp) {
@@ -146,7 +151,7 @@ void RootManager::SortEvent(int eventNb) {
 	//fSceptarData->ClearVariables();
 
 	// clear the GriffinData object
-	//	fGriffinData->ClearVariables();
+	 fGriffinData->ClearVariables();
 
 	// Sort Data from the map second element by getters and set them
 	std::map<string,RawG4Event>::iterator it;
@@ -158,7 +163,7 @@ void RootManager::SortEvent(int eventNb) {
 		//if (1) SetFragmentEvent(it->first); // take all the event in the fragment tree
 
 		//Spice
-		if (system=="SPI") SetSpiceEvent(eventNb, it->first, it->second.GetDetector(), it->second.GetCrystal());
+		//if (system=="SPI") SetSpiceEvent(eventNb, it->first, it->second.GetDetector(), it->second.GetCrystal());
 		//if (system=="SPE") SetS3Event(eventNb, it->first, it->second.GetDetector(), it->second.GetCrystal());
 		
 		//Paces
@@ -175,6 +180,7 @@ void RootManager::SortEvent(int eventNb) {
 		
 		//Griffin
 		//Need to put Griffin key here
+		if (system=="GRG") SetGriffinEvent(eventNb, it->first, it->second.GetDetector(), it->second.GetCrystal());		
 		
 		//New Detector
 		//if (system==XYZ) SetOtherDetectorEvent(key);
@@ -240,7 +246,21 @@ string RootManager::BuildMnemonic(string volume, int detector, int crystal) {
 
     //--------------------- 
 	//Griffin 	
-
+	if (system == "GR"){ 
+		if (sub_system == "G") { // Germanium 
+			ostringstream convert;   // stream used for the conversion	
+			convert << std::setw(2) << std::setfill('0') << (detector+1);  //  set the width to 2 (xy), fill the blanks by zeros we add 
+			if (crystal==0) convert << std::setw(1) << 'B';
+			else if (crystal==1) convert << std::setw(1) << 'G';
+				else if (crystal==2) convert << std::setw(1) << 'R';
+					else if (crystal==3) convert << std::setw(1) << 'W';
+						else convert << std::setw(1) << 'X'; // something wrong 
+												
+			number = convert.str(); // set 'Result' to the contents of the stream
+			return ( system + sub_system  + number + "N00a") ; // we are keeping event of the core 
+			}
+	 }
+	 
     //--------------------- 
 	//Other detectors
 	
@@ -293,7 +313,7 @@ void RootManager::SetSpiceEvent(int eventNb, string mnemonic, int Ring, int Seg)
 	double energy = fGeantEvent.at(mnemonic).GetFullEnergy();
 	double stDev = SpiceResolution[1] * energy + SpiceResolution[0];
 	double applied_resolution = CLHEP::RandGauss::shoot(energy, stDev); 
-	TVector3 pos = fGeantEvent.at(mnemonic).GetSecondHitPosition() ;
+	TVector3 pos = fGeantEvent.at(mnemonic).GetFirstHitPosition() ;
 
 	// fill the SpiceData object
 	// (Th,E)
@@ -341,7 +361,7 @@ void RootManager::SetS3Event(int eventNb, string mnemonic, int Ring, int Seg) {
 	double energy = fGeantEvent.at(mnemonic).GetFullEnergy();
 	double stDev = (SpiceResolution[1]*keV) * energy  + (SpiceResolution[0]*keV); // the result is in MeV
 	double applied_resolution = CLHEP::RandGauss::shoot(energy, stDev);  
-	TVector3 pos = fGeantEvent.at(mnemonic).GetSecondHitPosition() ;
+	TVector3 pos = fGeantEvent.at(mnemonic).GetFirstHitPosition() ;
 
 	// fill the S3Data object
 	// (Th,E)
@@ -491,6 +511,40 @@ void RootManager::SetSceptarEvent(int eventNb, string mnemonic, int detector, in
 
 }
 
+
+void RootManager::SetGriffinEvent(int eventNb, string mnemonic, int det, int crystal) {	
+	// treat
+
+	fGeantEvent.at(mnemonic).SortPrimary();			
+
+	fGriffinData->SetEventNumber(eventNb) ;
+	// get primary
+	// Pdg
+
+	int mult = fGeantEvent.at(mnemonic).GetPrimaryPdgMult(); // inside this particular pad 
+    for (int i = 0 ; i<mult ;  i++ )
+	fGriffinData->SetPrimaryPdg( fGeantEvent.at(mnemonic).GetPrimaryPdg(i) ) ;
+	
+	// Energy      
+    mult = fGeantEvent.at(mnemonic).GetPrimaryEnergyMult(); // this should be the same as above
+	for (int i = 0 ; i<mult ;  i++ )	
+	fGriffinData->SetPrimaryEnergy( fGeantEvent.at(mnemonic).GetPrimaryEnergy(i) ) ;
+
+	// get the energy 			
+	double energy = fGeantEvent.at(mnemonic).GetFullEnergy();
+	TVector3 pos = fGeantEvent.at(mnemonic).GetFirstHitPosition() ;
+
+    double res = CLHEP::RandGauss::shoot(energy/keV, 1.1);
+	// fill the GriffinData object
+	fGriffinData->SetGriffinEDetectorNbr(det) ; 
+	fGriffinData->SetGriffinECrystalNbr(crystal) ;    
+	fGriffinData->SetGriffinEEnergy(energy/keV+res) ;     
+	fGriffinData->SetPositionFirstHit(pos);	
+
+}
+
+
+
      void RootManager::ClearVariables(void){
      
 		//printf("RootManager : ClearVariables .\n");    
@@ -502,7 +556,7 @@ void RootManager::SetSceptarEvent(int eventNb, string mnemonic, int detector, in
 		fHistoryData->ClearVariables();
 
 		// ClearVariables the SpiceData object
-		fSpiceData->ClearVariables();
+		//fSpiceData->ClearVariables();
 		//fS3Data->ClearVariables();
 
 		// ClearVariables the PacesData object
@@ -515,7 +569,7 @@ void RootManager::SetSceptarEvent(int eventNb, string mnemonic, int detector, in
 		//fSceptarData->ClearVariables();
 
 		// ClearVariables the GriffinData object
-		//fGriffinData->ClearVariables();
+		fGriffinData->ClearVariables();
      }
 
 void RootManager::SetHistory( vector <TrackInformation*> info ){
@@ -604,8 +658,6 @@ bool filled = false ;
 		y = info.at(iInfo)->GetCurrentPositionAtDeath().getY(); 
 		z = info.at(iInfo)->GetCurrentPositionAtDeath().getZ();  
 		fHistoryData->SetHistoryCurrentPositionDeath(x,y,z)	;  
-
-
 
 		x = info.at(iInfo)->GetCurrentMomentumAtVertex().getX(); 
 		y = info.at(iInfo)->GetCurrentMomentumAtVertex().getY(); 

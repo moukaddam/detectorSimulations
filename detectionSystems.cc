@@ -143,9 +143,9 @@ int main(int argc,char** argv)
     }
 
 	// mhd [12 May 2015], create gdml file for visulaisation in ROOT 
-	G4VPhysicalVolume* pWorld = G4TransportationManager::GetTransportationManager()->GetNavigatorForTracking()->GetWorldVolume();
-	G4GDMLParser parser;
-	parser.Write("g4SpiceS3.gdml", pWorld);
+	//G4VPhysicalVolume* pWorld = G4TransportationManager::GetTransportationManager()->GetNavigatorForTracking()->GetWorldVolume();
+	//G4GDMLParser parser;
+	//parser.Write("Geometry.gdml", pWorld);
 		
   // Job termination
   // Free the store: user actions, physics_list and detector_description are

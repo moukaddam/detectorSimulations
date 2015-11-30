@@ -368,10 +368,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
     pos2.x(), pos2.y(), pos2.z(), time2, 
     OriginMoment.getX(), OriginMoment.getY(), OriginMoment.getZ(), 
     OriginEnergy, OriginPdg, OriginID, trackID);
-
 //cout << edep << endl ; 
 //cin.get() ; 
-
   }
   
   //SPICE  
@@ -396,10 +394,8 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 	OriginEnergy, OriginPdg, OriginID, trackID);
   }
  
- 
    stepNumber++;
- 
- 
+
 }
 
 void SteppingAction::SetDetAndCryNumberForGriffinComponent(G4String volname)

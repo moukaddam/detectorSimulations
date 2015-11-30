@@ -73,6 +73,7 @@ inline Int_t    	GetHistoryMult(void)		    { return fHistoryPrimaryEnergy.size()
 inline Double_t		GetHistoryPrimaryID(int i)		{  return fHistoryPrimaryID.at(i); }
 inline Int_t 		GetHistoryPrimaryPdg(int i)		{  return fHistoryPrimaryPdg.at(i); } 
 inline Double_t		GetHistoryPrimaryEnergy(int i)	{  return fHistoryPrimaryEnergy.at(i); } 
+
 inline Double_t		GetHistoryPrimaryTrajectoryX(int i)			{  return fHistoryPrimaryTrajectoryX.at(i); } 
 inline Double_t		GetHistoryPrimaryTrajectoryY(int i)			{  return fHistoryPrimaryTrajectoryY.at(i); } 
 inline Double_t		GetHistoryPrimaryTrajectoryZ(int i)			{  return fHistoryPrimaryTrajectoryZ.at(i); } 

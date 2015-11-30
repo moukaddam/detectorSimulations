@@ -79,7 +79,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetWorldVis( G4bool );
     void SetWorldMagneticField( G4ThreeVector );
     void SetTabMagneticField(G4String, G4double, G4double);
-    void SetWorldMaximumStep( G4double ); 
 
     void SetGenericTargetMaterial( G4String );
     void SetGenericTargetDimensions( G4ThreeVector );
@@ -92,16 +91,16 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     void SetFieldBox( );
 		    
     void SetBoxMat( G4String input )                   {box_mat = input;};
-		void SetBoxThickness( G4double input )             {box_thickness = input;};
-		void SetBoxInnerDimensions( G4ThreeVector input )  {box_inner_dimensions = input;};
-		void SetBoxColour( G4ThreeVector input )           {box_colour = input;};
-		void AddBox();
-		// Grid Functions
-		void SetGridMat( G4String input )                  {grid_mat = input;};
-		void SetGridSize( G4double input )                 {grid_size = input;};
-		void SetGridDimensions( G4ThreeVector input )      {grid_dimensions = input;};
-		void SetGridColour( G4ThreeVector input )          {grid_colour = input;};
-		void AddGrid();  
+	void SetBoxThickness( G4double input )             {box_thickness = input;};
+	void SetBoxInnerDimensions( G4ThreeVector input )  {box_inner_dimensions = input;};
+	void SetBoxColour( G4ThreeVector input )           {box_colour = input;};
+	void AddBox();
+	// Grid Functions
+	void SetGridMat( G4String input )                  {grid_mat = input;};
+	void SetGridSize( G4double input )                 {grid_size = input;};
+	void SetGridDimensions( G4ThreeVector input )      {grid_dimensions = input;};
+	void SetGridColour( G4ThreeVector input )          {grid_colour = input;};
+	void AddGrid();  
 
     void AddApparatusSpiceTargetChamber();
     void AddApparatus8piVacuumChamber();

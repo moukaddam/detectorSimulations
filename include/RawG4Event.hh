@@ -95,7 +95,7 @@ Double_t    GetHCPrimaryPhi(int i);
 // after treatment
 Double_t 	GetFullEnergy(void) ; // full energy in pad
 TVector3 	GetFirstHitPosition(void) ; // first hit position
-TVector3 	GetSecondHitPosition(void) ; // first hit position
+TVector3 	GetSecondHitPosition(void) ; // second hit position
 Int_t 	 	GetDetector(void) ; // detector
 Int_t 	 	GetCrystal(void) ; // crystal
                                   // the reason for this treatment is because our basic element is a pad not one hit from the collection of Hit

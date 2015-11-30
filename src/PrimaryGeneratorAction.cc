@@ -648,6 +648,7 @@ void PrimaryGeneratorAction::EmissionForRadioactiveSourceDecay( G4Event* myEvent
       levelRandomiser = RandFlat::shoot(0.,100.);
       while( (levelProbSum += levelScheme[j][9+k*6]) < levelRandomiser )
 	{
+	  if (levelScheme[j][9+k*6] <= 0.0000001) break ; // in case of an E0 transition dont stick in this loop
 	  k++;
 	  if( k==nTransPerLevel )
 	    {
@@ -732,7 +733,8 @@ void PrimaryGeneratorAction::LevelSchemeReader( const char* filename )
   
   // ignore first blank line
   string buffer;
-  getline(file,buffer); G4cout <<"skipping this line :" <<buffer << endl; 
+  getline(file,buffer); 
+  G4cout <<"skipping this line :" <<buffer << endl; 
   
   // read in number of levels
   file >> nLevels >> nTransPerLevel >> nParam >> bindingEnergyK >> bindingEnergyL1 >> bindingEnergyL2 >> bindingEnergyL3;

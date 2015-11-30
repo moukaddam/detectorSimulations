@@ -96,14 +96,14 @@ class RootManager   {
        //SortEvent
        void SortEvent(int eventNb);
        
-       //Set the data in Spice writing Class
+       //Set the data in the detector writing classes
        void SetHistory( vector <TrackInformation*> info );  // History of the LAST particles in a cascade of events (Whether a part or all of this cascade ended in the detector or )
        void SetSpiceEvent(int eventNb, string mnemonic, int Ring, int Seg);
        void SetS3Event(int eventNb, string mnemonic, int Ring, int Seg);
        void SetPacesEvent(int eventNb, string mnemonic, int Ring, int Seg);
        void SetNewEvent(int eventNb, string mnemonic, int detector, int Seg);
        void SetSceptarEvent(int eventNb, string mnemonic, int detector, int Seg);
-
+       void SetGriffinEvent(int eventNb, string mnemonic, int Det, int Cry);
        
        void SetGriffinEvent(int key);
        void SetFragmentEvent(string key);
