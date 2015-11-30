@@ -76,6 +76,10 @@ private:
   G4LogicalVolume* target_chamber_sphere_log;
   G4LogicalVolume* target_chamber_cylinder_down_log;
   G4LogicalVolume* target_wheel_log;
+  G4LogicalVolume* fFrameLogical;
+  G4LogicalVolume* fCollimLogical;
+  G4LogicalVolume* fExtLogical;
+  G4LogicalVolume* fRodLogical;
   G4LogicalVolume* first_gear_log;
   G4LogicalVolume* second_gear_log;
   G4LogicalVolume* third_gear_log;
@@ -98,6 +102,7 @@ private:
   G4LogicalVolume* electro_box_log;
   G4LogicalVolume* shield_cover_log;
   G4LogicalVolume* cold_finger_log;
+  G4LogicalVolume* fS3CaseLogical;
   
 private:
   ////////////////////////////////////////////
@@ -108,6 +113,10 @@ private:
   G4VPhysicalVolume* target_chamber_sphere_phys;
   G4VPhysicalVolume* target_chamber_cylinder_down_phys;
   G4VPhysicalVolume* target_wheel_phys;
+  G4VPhysicalVolume* fFramePhysical;
+  G4VPhysicalVolume* fCollimPhysical;
+  G4VPhysicalVolume* fExtPhysical;
+  G4VPhysicalVolume* fRodPhysical;
   G4VPhysicalVolume* first_gear_phys;
   G4VPhysicalVolume* second_gear_phys;
   G4VPhysicalVolume* third_gear_phys;
@@ -130,6 +139,7 @@ private:
   G4VPhysicalVolume* electro_box_phys;
   G4VPhysicalVolume* shield_cover_phys;
   G4VPhysicalVolume* cold_finger_phys;
+  G4VPhysicalVolume* fS3CasePhysical;
   
 private:
   ////////////////////////////////////////////
@@ -140,6 +150,7 @@ private:
   // Magnet properties:
   //-------------------------
   G4int NUMBER_OF_MAGNETS;
+  G4int fNumberOfFrames;
   G4double zOffset;
 
   //-------------------------
@@ -167,6 +178,7 @@ private:
   G4String shield_cover_material;
   G4String magnet_cover_material;
   G4String cold_finger_material;
+  G4String s3_cable_case_material;
 
   //-------------------------
   // Dimensions:
@@ -239,6 +251,10 @@ private:
   G4double gear_stick_length;
   G4double gear_stick_radius;
   G4double gear_stick_z_offset;
+  // Target Frame
+  G4double fDimTargetFrameOutZ;
+	G4double fDimTargetFrameOutY;
+	G4double fDimTargetFrameCutY;
 
   //----------------------------
   // Dimensions of Photon Shield
@@ -369,8 +385,13 @@ private:
   void BuildTargetChamberSphere();
   void BuildTargetChamberCylinderDownstream();
   void BuildTargetWheel();
+  void BuildTargetWheelSimple();
+  void BuildTargetWheelRods();
   void BuildTargetWheelGears();
   void BuildTargetWheelGearPlates();
+  void BuildTargetFrame();
+  void BuildTargetWheelExtension();
+  void BuildCollimator();
   void BuildGearStick();
   void BuildBiasPlate();
   void BuildTargetMountPlate();
@@ -384,15 +405,20 @@ private:
   void BuildElectroBox();
   void BuildShieldCovering();
   void BuildColdFinger();
+  void BuildS3CableHolder();
   
   void PlaceTargetChamberFrontRing();
   void PlaceTargetChamberSphere();
   void PlaceTargetChamberCylinderDownstream();
   void PlaceTargetWheel();
+  void PlaceTargetWheelRods(G4double, G4double);
   void PlaceTargetWheelGears();
   void PlaceTargetWheelGearPlates();
+  void PlaceTargetFrame(G4double);
+  void PlaceCollimator();
   void PlaceGearStick();
   void PlaceTargetMountPlate();
+  void PlaceTargetWheelExtension();
   void PlaceBiasPlate();
   void PlacePhotonShield();
   void PlacePhotonShieldClamps();
@@ -404,6 +430,7 @@ private:
   void PlaceElectroBox();
   void PlaceShieldCovering();
   void PlaceColdFinger();
+  void PlaceS3CableHolder();
       
   // functions
   G4RotationMatrix* RotateMagnets(G4int);
